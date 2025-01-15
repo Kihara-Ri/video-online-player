@@ -4,14 +4,16 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="/static/css/style.css">
+  <link rel="stylesheet" type="text/css" href="/static/css/style.css">
   <title>视频播放</title>
 </head>
 <body>
-  <h1>播放视频: {{ .FilePath }}</h1>
-  <video controls autoplay style="width: 100%; max-height: 90vh;">
-    <source src="{{ .FilePath }}" type="video/mp4">
-    你的浏览器不支持视频播放
-  </video>
+  <div class="main-container">
+    <h1>播放视频: {{ .FilePath }}</h1>
+    <video controls style="width: 100%; max-height: 90vh;">
+      <source src="{{ .FilePath }}" type="video/mp4">
+      你的浏览器不支持视频播放
+    </video>
+  </div>
 </body>
 </html>

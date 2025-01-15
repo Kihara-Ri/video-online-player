@@ -4,21 +4,23 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="/static/css/style.css">
+  <link rel="stylesheet" type="text/css" href="/static/css/style.css">
   <title>视频在线播放服务</title>
 </head>
 <body>
-  <h1>视频文件夹: {{.CurrentDir}}</h1>
-  <ul>
-    {{range .Files}}
-    <li>
-      {{if .IsDir}}
-      <a href="/?dir={{$.CurrentDir}}/{{.Name}}">{{.Name}}/</a>
-      {{else}}
-      <a href="/play?file={{$.CurrentDir}}/{{.Name}}">{{.Name}}</a>
+  <div class="main-container">
+    <h1>视频文件夹: {{.CurrentDir}}</h1>
+    <ul>
+      {{range .Files}}
+      <li>
+        {{if .IsDir}}
+        <a href="/?dir={{$.CurrentDir}}/{{.Name}}">{{.Name}}/</a>
+        {{else}}
+        <a href="/play?file={{$.CurrentDir}}/{{.Name}}">{{.Name}}</a>
+        {{end}}
+      </li>
       {{end}}
-    </li>
-    {{end}}
-  </ul>
+    </ul>
+  </div>
 </body>
 </html>
