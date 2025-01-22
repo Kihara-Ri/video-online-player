@@ -7,7 +7,7 @@ const Browse: React.FC = () => {
   const [items, setItems] = useState<{ name: string; path: string; type: string; }[]>([]);
   const navigate = useNavigate();
   
-  console.log("currentDir: ", currentDir);
+  console.log("组件加载 currentDir: ", currentDir);
 
   useEffect(() => {
     // 初始状态下, 列出三大目录
@@ -36,12 +36,15 @@ const Browse: React.FC = () => {
       .catch((error) => console.error("拉取视频目录失败: ", error));
   }, [currentDir, dirType]);
 
+  // 处理点击事件
   const handleClick = (item: { name: string; path: string; type: string }) => {
     console.log('handleClick', item);
     if (item.type === 'directory') {
       // 更新 DirType, currentDir
-      setDirType(item.name);
+      setDirType(item.path.split('/')[0]);
       setCurrentDir(item.path);
+      console.log("更新 dirType: ", item.path.split('/')[0])
+      console.log("更新 currentDir: ", item.path)
       // 导航到新的目录
       console.log("Navigate to: ", `/browse/${item.path}`)
       navigate(`/browse/${item.path}`);

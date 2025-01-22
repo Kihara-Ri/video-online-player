@@ -27,11 +27,10 @@ type Item struct {
 
 // 处理前端单层目录请求
 func ListSingleDir(w http.ResponseWriter, r *http.Request) {
-	fmt.Println("\nr.URL.Query().Get('dir'): ", r.URL.Query().Get("dir"))
-	fmt.Println("请求的路径 r.URL.Path: ", r.URL.Path)
-
 	// 从 URL 查询参数获取 dir 值
 	dir := r.URL.Query().Get("dir")
+	fmt.Println("\nr.URL.Query().Get('dir') || 前端请求文件路径: ", dir)
+	fmt.Println("请求的API r.URL.Path: ", r.URL.Path)
 
 	dirType := strings.Split(dir, "/")[0] // 获取 bangumi, shows, downloads
 	fmt.Println("获取的dirType: ", dirType)
@@ -48,7 +47,7 @@ func ListSingleDir(w http.ResponseWriter, r *http.Request) {
 	if dir == "bangumi" || dir == "shows" || dir == "downloads" {
 		fullPath = basePath
 	} else {
-		fullPath = filepath.Join(basePath, dir)
+		fullPath = filepath.Join(removeLastSegment(basePath), dir)
 	}
 	fmt.Println("获取的fullPath: ", fullPath)
 
@@ -82,4 +81,15 @@ func ListSingleDir(w http.ResponseWriter, r *http.Request) {
 	// 返回 JSON 响应
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(items)
+}
+
+func removeLastSegment(path string) string {
+	// 使用 strings.Split 分割路径
+	parts := strings.Split(path, "/")
+	// 去掉最后一个部分
+	if len(parts) > 1 {
+		parts = parts[:len(parts)-1]
+	}
+	// 重新组合路径
+	return strings.Join(parts, "/")
 }
