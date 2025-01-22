@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom'; 
 
 const Browse: React.FC = () => {
-  const [dirType, setDirType] = useState<string>("bangumi");
+  const [dirType, setDirType] = useState<string>("");
   const [currentDir, setCurrentDir] = useState<string>("");
   const [items, setItems] = useState<{ name: string; path: string; type: string; }[]>([]);
   const navigate = useNavigate();
@@ -49,9 +49,22 @@ const Browse: React.FC = () => {
       console.log("Navigate to: ", `/browse/${item.path}`)
       navigate(`/browse/${item.path}`);
     } else if (item.type === 'video') {
-      window.location.href = `/player?file=${encodeURIComponent(item.path)}&dirType=${dirType}`;
+      console.log("点击视频 ", item.name)
+      window.location.href = `/player?file=${encodeURIComponent(item.path)}`;
     }
   };
+
+  // 处理返回事件
+  const handleBack = () => {
+    const lastDir = currentDir.substring(0, currentDir.lastIndexOf('/')) || ""; // *含义还没查
+    console.log("点击返回事件, 返回至: ", lastDir)
+
+    // 更新状态以触发重新渲染
+    setCurrentDir(lastDir);
+    navigate(`/browse/${lastDir}`, { replace: true});
+    // replace 将不会在浏览器历史记录中创建新条目, 防止跳转历史堆栈中留下不必要的记录
+    // *尚不清楚浏览器自带的前后操作为什么失效(有可能是没渲染)
+  }
 
   return (
     <div>
@@ -67,7 +80,7 @@ const Browse: React.FC = () => {
         ))}
       </ul>
       {currentDir && (
-        <button onClick={() => navigate(`/browse/${dirType}/${currentDir.substring(0, currentDir.lastIndexOf('/'))}`)}>
+        <button onClick={handleBack}>
           返回上一级
         </button>
       )}

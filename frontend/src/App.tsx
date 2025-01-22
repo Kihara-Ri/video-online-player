@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-d
 import Home from './pages/Home';
 import Browse from './pages/Browse';
 import Login from './components/Login';
+import Player from './pages/Player';
 import './App.css';
 
 function App() {
@@ -31,6 +32,10 @@ function App() {
         <Route
           path="/"
           element={isAuthenticated ? <Home /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="/player"
+          element={isAuthenticated ? <Player /> : <Navigate to="/login" />}
         />
         {/* 未匹配的页面跳转 */}
         <Route path="*" element={<Navigate to="/" />} />
