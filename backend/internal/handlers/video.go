@@ -1,7 +1,10 @@
 package handlers
 
+// 视频请求处理实现
+
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -9,90 +12,74 @@ import (
 )
 
 // 视频存放目录
-var videoDirs = []string{
-	"/mnt/my_hdd/bangumi",
-	"/mnt/my_hdd/downloads",
-	"/mnt/my_hdd/shows",
+var baseDirs = map[string]string{
+	"bangumi":   "/mnt/my_hdd/bangumi",
+	"shows":     "/mnt/my_hdd/shows",
+	"downloads": "/mnt/my_hdd/downloads",
 }
 
-type Video struct {
+// 响应结构体
+type Item struct {
 	Name string `json:"name"`
 	Path string `json:"path"`
+	Type string `json:"type"`
 }
 
-// GetVideoHandler 处理视频请求
-func GetVideoHandler(w http.ResponseWriter, r *http.Request) {
-	query := r.URL.Query()
-	videoName := query.Get("name")
+// 处理前端单层目录请求
+func ListSingleDir(w http.ResponseWriter, r *http.Request) {
+	fmt.Println("\nr.URL.Query().Get('dir'): ", r.URL.Query().Get("dir"))
+	fmt.Println("请求的路径 r.URL.Path: ", r.URL.Path)
 
-	if videoName == "" {
-		http.Error(w, "视频名称未提供", http.StatusBadRequest)
+	// 从 URL 查询参数获取 dir 值
+	dir := r.URL.Query().Get("dir")
+
+	dirType := strings.Split(dir, "/")[0] // 获取 bangumi, shows, downloads
+	fmt.Println("获取的dirType: ", dirType)
+
+	// 检查是否是合法的目录类型
+	basePath, exists := baseDirs[dirType]
+	if !exists {
+		http.Error(w, "无效的目录类型", http.StatusBadRequest)
+		return
+	}
+	fmt.Println("获取的basePath: ", basePath)
+	// 拼接完整路径
+	var fullPath string
+	if dir == "bangumi" || dir == "shows" || dir == "downloads" {
+		fullPath = basePath
+	} else {
+		fullPath = filepath.Join(basePath, dir)
+	}
+	fmt.Println("获取的fullPath: ", fullPath)
+
+	// 读取目录内容
+	files, err := os.ReadDir(fullPath)
+	if err != nil {
+		http.Error(w, "读取目录失败", http.StatusInternalServerError)
 		return
 	}
 
-	// 允许的扩展名
-	allowedExtensions := []string{".mp4", ".mkv"}
+	var items []Item
 
-	var foundVideo *Video
-
-	// 在多个目录中查找视频文件
-	for _, dir := range videoDirs {
-		for _, ext := range allowedExtensions {
-			videoPath := filepath.Join(dir, videoName+ext)
-			if _, err := os.Stat(videoPath); err == nil {
-				foundVideo = &Video{
-					Name: videoName + ext,
-					Path: "/videos/" + videoName + ext, // 提供给前端访问路径
-				}
-				break
+	for _, file := range files {
+		itemType := "directory"
+		if !file.IsDir() {
+			ext := strings.ToLower(filepath.Ext(file.Name()))
+			if ext == ".mp4" || ext == ".mkv" {
+				itemType = "video"
+			} else {
+				continue // 忽略非视频文件
 			}
 		}
-		if foundVideo != nil {
-			break
-		}
-	}
-	if foundVideo == nil {
-		http.Error(w, "视频文件未找到", http.StatusNotFound)
-		return
-	}
 
-	// 返回视频数据
-	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(foundVideo)
-}
-
-// GetAllVideosHandler 处理所有视频
-func GetAllVideosHandler(w http.ResponseWriter, r *http.Request) {
-	allowedExtensions := []string{".mp4", ".mkv"}
-	var allVideos []Video
-
-	for _, dir := range videoDirs {
-		err := filepath.Walk(dir, func(path string, info os.FileInfo, err error) error {
-			if err != nil {
-				return err
-			}
-
-			// 检查文件是否符合要求
-			if !info.IsDir() {
-				ext := strings.ToLower(filepath.Ext(info.Name()))
-				for _, allowedExt := range allowedExtensions {
-					if ext == allowedExt {
-						allVideos = append(allVideos, Video{
-							Name: info.Name(),
-							Path: "/videos/" + strings.TrimPrefix(path, "/mnt/my_hdd"),
-						})
-					}
-				}
-			}
-			return nil
+		items = append(items, Item{
+			Name: file.Name(),
+			Path: filepath.Join(dir, file.Name()),
+			Type: itemType,
 		})
-		if err != nil {
-			http.Error(w, "无法读取目录: "+dir, http.StatusInternalServerError)
-			return
-		}
 	}
 
-	// 返回视频列表
+	// 返回 JSON 响应
 	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(allVideos)
+	json.NewEncoder(w).Encode(items)
 }
