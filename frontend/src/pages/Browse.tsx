@@ -1,5 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom'; 
+import { useNavigate } from 'react-router-dom';
+import '../styles/browse.css';
+import '../styles/navBar.css';
+import '../styles/buttons.css';
+import DirectoryPath from '../components/DirectoryPath';
+import BackArrow from '../assets/icons/back-arrow.svg';
+import Home from '../assets/icons/home.svg';
+import Folder from '../assets/icons/folder.svg';
+import Video from '../assets/icons/video.svg';
 
 const Browse: React.FC = () => {
   const [dirType, setDirType] = useState<string>("");
@@ -67,23 +75,42 @@ const Browse: React.FC = () => {
   }
 
   return (
-    <div>
-      <h1>视频列表</h1>
-      <ul>
+    <div className="browse-container">
+      <nav className="nav-bar">
+        {currentDir && (
+          <button onClick={handleBack} className="back-button">
+            <img src={BackArrow} alt="back-arrow" className="icon" />
+          </button>
+        )}
+        <h1 className="browse-title">
+          { <DirectoryPath currentDir={currentDir} />}
+        </h1>
+        <img src={Home} alt="home-icon" onClick={() => navigate('/')} className="home-button" />
+      </nav>
+
+      <ul className="gallery-view">
         {items.map((item) => (
-          <li key={item.path} onClick={() => handleClick(item)}>
-            {item.type === 'directory' ? 
-            `📁 ${item.name}` :
-            `🎬 ${item.name}`
-          }
+          <li  key={item.path} onClick={() => handleClick(item)} className={item.name}>
+            <div className="img-container">
+              here is for image
+            </div>
+            <div className="dirName-container">
+              {item.type === 'directory' ? (
+                <div className="dirName">
+                  <img src={Folder} alt="folder-icon" className="icon" /> {item.name}
+                </div> 
+              ) : (
+                <div className="dirName">
+                  <img src={Video} alt="video-icon" className="icon" /> {item.name}
+                </div>
+              )}
+            </div>
           </li>
         ))}
       </ul>
-      {currentDir && (
-        <button onClick={handleBack}>
-          返回上一级
-        </button>
-      )}
+      <div className="footer">
+        Copyright © 2024-2025 Kihara Ri
+      </div>
     </div>
   );
 };

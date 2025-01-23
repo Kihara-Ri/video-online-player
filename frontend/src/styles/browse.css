@@ -1,0 +1,93 @@
+.browse-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* justify-content: center; */
+  width: 100%;
+  min-height: 100vh;
+}
+
+.browse-title {
+  padding: 5px 0;
+  color: #f5f5f5;
+  width: 100%;
+}
+
+.home-button {
+  padding: 5px;
+  border-radius: 10px;
+  transition: background-color 0.3s ease;
+}
+.home-button:hover {
+  background-color: var(--primary-orange);
+}
+
+.gallery-view {
+  margin-top: 120px;
+  margin-bottom: 220px; /* 避免被 footer 遮住 */
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+}
+
+/* 大屏幕设备样式 */
+@media (min-width: 768px) {
+  .gallery-view li {
+    flex: 1 1 calc(25%);
+    max-width: calc(33.333% - 40px);
+  }
+}
+
+/* 小屏幕设备样式 */
+@media (max-width: 767px) {
+  .gallery-view {
+    flex-direction: column;
+    align-items: center;
+  }
+  .gallery-view li {
+    width: 90%;
+    max-width: 400px;
+  }
+}
+
+li {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.img-container {
+  background-color: #f2f2f2;
+  width: 100%;
+  height: 250px;
+  overflow: hidden;
+  border-radius: 5px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 过长的名字显示仍然会超过容器宽度 */
+.dirName {
+  padding: 5px 20px;
+  font-size: 1rem;
+  color: #333;
+}
+
+.footer {
+  width: 100%;
+  position: fixed;
+  bottom: 0;
+  color: var(--background-white);
+  background-color: var(--background-black);
+  height: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}

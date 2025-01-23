@@ -6,4 +6,14 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  --background-white: #f9f9f9;
+  --background-gray: #c0c0c0;
+  --background-light-black: #434343;
+  --background-black: #222222;
+  --primary-opacity: rgb(0, 0, 0, 0.2);
+  --font-black: #303d56;
+  --primary-blue: #3365d1;
+  --primary-light-blue: #3c87f7;
+  --primary-orange: #e09509;
 }

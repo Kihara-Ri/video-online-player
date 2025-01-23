@@ -1,0 +1,36 @@
+button {
+  border: 0;
+  padding: 0;
+  background-color: none;
+}
+
+.back-button {
+  border-radius: 50%;
+  width: 37px;
+  height: 37px;
+
+  background-color: var(--background-light-black);
+  transition: background-color 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+  position: absolute;
+  left: 5%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.back-button:hover {
+  background-color: var(--primary-orange);
+  box-shadow: 0 2px 2px rgba(0, 0, 0, 0.2);
+}
+
+.back-arrow {
+  width: 20px;
+}
+
+.home-button {
+  width: 24px;
+  position: absolute;
+  right: 5%;
+  cursor: pointer;
+}

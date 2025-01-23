@@ -24,9 +24,13 @@ a:hover {
   color: #fff;
 }
 
+ul {
+  margin: 0;
+  padding: 0;
+}
+
 li {
   margin: 10px;
-  padding: 10px;
   list-style: none;
   background-color: #bbbbbb;
   border-radius: 5px;
@@ -40,4 +44,9 @@ li {
   align-items: center;
   /* justify-content: center; */
   min-height: 100vh;
+}
+
+.icon {
+  width: 1.2rem;
+  height: 1.2rem;
 }
