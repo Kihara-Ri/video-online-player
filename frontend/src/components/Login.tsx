@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom'; // 引入 react-router-dom 的 useNavigate 钩子
+import '../styles/login.css';
+import Account from '../assets/icons/account.svg';
+import Password from '../assets/icons/password.svg';
 
 interface LoginProps {
   setAuth: (status: boolean) => void;
@@ -37,23 +40,32 @@ const Login: React.FC<LoginProps> = ({ setAuth }) => {
   };
 
   return (
-    <div>
-      <h2>登录</h2>
-      <form onSubmit={handleLogin}>
-        <input
-          type="text"
-          placeholder='用户名'
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-        />
-        <input
-          type="password"
-          placeholder='密码'
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <button type="submit">登录</button>
-      </form>
+    <div className="background-image">
+      <div className="login-container">
+        <h1 className="login-title">登录</h1>
+        <form onSubmit={handleLogin} className="login-form">
+          <div className="input-container">
+            <img src={Account} alt="account-icon" className="login-icon" />
+            <input 
+              type="text"
+              placeholder='用户名'
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+            />
+          </div>
+          <div className="input-container">
+            <img src={Password} alt="password-icon" className="login-icon" />
+            <input
+              type="password"
+              placeholder='密码'
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </div>
+
+          <button type="submit" className="login-button">SIGN IN</button>
+        </form>
+      </div>
     </div>
   );
 };
