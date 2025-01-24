@@ -1,0 +1,110 @@
+.home-container {
+  background-color: var(--background-deep-gray);
+  height: 100vh;
+}
+
+.home-nav-bar {
+  background-color: var(--background-light-black);
+  height: 60px;
+  display: flex;
+  align-items: center;
+  position: relative;
+  justify-content: space-between;
+}
+
+.search-bar-container {
+  position: absolute;
+  /* 靠右定位, 由此激活时搜索框向左延伸 */
+  right: 220px; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 40px;
+  border-radius: 40px;
+  background-color: #ddd;
+  transition: all 0.4s ease-in-out;
+}
+.search-bar-container:hover #search-input,
+/* 使用 .expanded, 当 input 处于 focus 状态时保持展开并配合 js 监听输入内容 */
+.search-bar-container.expanded #search-input {
+  width: 200px;
+  padding: 0 10px;
+}
+.search-bar-container:hover #search-button {
+  background: none;
+}
+
+/* 在 search-bar-container:hover 生效时, search-button 相关操作生效 */
+.search-bar-container:hover #search-button:hover {
+  background-color: var(--primary-orange);
+}
+.search-bar-container:hover #search-button:active {
+  background-color: var(--background-light-black);
+}
+
+#search-input {
+  width: 0;
+  transition: all 0.4s ease;
+  line-height: 30px;
+  font-size: 1.2rem;
+  padding: 0;
+  /* 输入框默认属性去除 */
+  outline: none;
+  border: 0;
+  background: 0;
+  /* 输入框内字体颜色 */
+  color: var(--font-black);
+}
+
+#search-button {
+  margin: 0 4px;
+  padding: 3px;
+  height: 26px;
+  width: 26px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #2f3640;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#home-button {
+  display: flex;
+  gap: 3px;
+  margin-left: 10px;
+}
+
+.home-button:hover {
+  background-color: var(--primary-orange);
+}
+
+#browse-button {
+  padding: 5px;
+  border-radius: 10px;
+  transition: background-color 0.3s ease;
+}
+
+#options-container {
+  display: flex;
+  gap: 1rem;
+  margin-right: 10px;
+}
+
+.new-added-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.carousel-container {
+  width: 800px;
+  height: 300px;
+  background-color: var(--background-light-black);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--background-white);
+}
